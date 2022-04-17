@@ -1,3 +1,0 @@
-Total Ram:7.97
- Used Ram:3.71
- CPU Count:2
