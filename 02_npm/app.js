@@ -2,6 +2,7 @@ const yargs = require('yargs');
 const kisi = require("./kisi");
 
 
+
 // console.log(process.argv[2]);
 // console.log(process.argv[3]);
 
@@ -63,6 +64,22 @@ yargs.command({
     handler(argv){
        // console.log("isim: "+argv.isim+" tel: "+argv.tel);
        kisi.ekle(argv.isim,argv.tel);
+    }
+});
+
+yargs.command({
+    command:"goster",
+    describe:"Seçilen kişiyi detaylıca gösterir",
+    builder:{
+        isim:{
+            describe:"Kişi adı",
+            demandOption:true,
+            type:"string",
+        },
+    },
+    handler(argv){
+
+        kisi.goster(argv.isim);
     }
 })
 
