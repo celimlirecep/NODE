@@ -1,47 +1,64 @@
 const express = require('express');
-const app=express();
+const app = express();
+const Joi = require('@hapi/joi');
 
-const kullanıcılar=[
-    {id:2,ad:"recep",yas:54},
-    {id:3,ad:"kazım",yas:43},
-    {id:4,ad:"hasan",yas:12},
+app.use(express.json())
+
+const kullanıcılar = [
+    { id: 2, ad: "recep", yas: 54 },
+    { id: 3, ad: "kazım", yas: 43 },
+    { id: 4, ad: "hasan", yas: 12 },
 ]
 
 
 
-app.get("/",(req,res)=>{
-console.log("ana sayfaya girildi")
-res.send("Ana sayfa");
+app.get("/", (req, res) => {
+    console.log("ana sayfaya girildi")
+    res.send("Ana sayfa");
 });
 
-app.get("/users",(req,res)=>{
-console.log("user sayfasına girildi");
-console.log(req.query.ters);
-if (req.query.ters) {
-    console.log("ters burda")
-    res.send(kullanıcılar.reverse());
-}
-else{
-    console.log("normal burda")
-    res.send(kullanıcılar);
-}
+app.get("/users", (req, res) => {
+    console.log("user sayfasına girildi");
+    console.log(req.query.ters);
+    if (req.query.ters) {
+        console.log("ters burda")
+        res.send(kullanıcılar.reverse());
+    }
+    else {
+        console.log("normal burda")
+        res.send(kullanıcılar);
+    }
 
+});
+app.post("/users",(req,res)=>{
+
+    const schema=Joi.object({
+        ad:Joi.
+    })
+
+    const yeniKullanici={
+        id:kullanıcılar.length+1,
+        ad:req.body.ad,
+        yas:req.body.yas
+    }
+    kullanıcılar.push(yeniKullanici);
+    res.send(yeniKullanici);
+    
+});
+
+app.get("/users/:id", (req, res) => {
+
+
+    const bulunanUser = kullanıcılar.find(user => user.id === parseInt(req.params.id));
+    if (bulunanUser) {
+        res.send(bulunanUser);
+    }
+    else {
+        res.status(404).send(`${req.params.id} id li kullanıcı bulunamamıştır`)
+    }
 })
 
-app.get("/users/:id",(req,res)=>{
 
- 
-const bulunanUser=kullanıcılar.find(user=>user.id===parseInt(req.params.id));
-if (bulunanUser) {
-    res.send(bulunanUser);
-}
-else 
-{
-    res.status(404).send(`${req.params.id} id li kullanıcı bulunamamıştır`)
-}
-})
-
-
-app.listen(3030,()=>{
+app.listen(3030, () => {
     console.log("Server 3030 portunu dinliyor");
 });
